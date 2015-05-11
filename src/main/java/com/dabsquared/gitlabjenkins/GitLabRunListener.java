@@ -19,7 +19,7 @@ public class GitLabRunListener extends RunListener<AbstractBuild> {
     @Override
     public void onCompleted(AbstractBuild abstractBuild, @Nonnull TaskListener listener) {
         GitLabPushTrigger trig = getTrigger(abstractBuild);
-        if (trig != null) {
+        if ( trig != null ) {
             trig.onCompleted(abstractBuild);
         }
         super.onCompleted(abstractBuild, listener);
@@ -28,7 +28,7 @@ public class GitLabRunListener extends RunListener<AbstractBuild> {
     @Override
     public void onStarted(AbstractBuild abstractBuild, TaskListener listener) {
         GitLabPushTrigger trig = getTrigger(abstractBuild);
-        if (trig != null) {
+        if ( trig != null ) {
             trig.onStarted(abstractBuild);
         }
         super.onStarted(abstractBuild, listener);
@@ -37,7 +37,7 @@ public class GitLabRunListener extends RunListener<AbstractBuild> {
 
     private GitLabPushTrigger getTrigger(AbstractBuild abstractBuild) {
         Trigger trig = abstractBuild.getProject().getTrigger(GitLabPushTrigger.class);
-        if (trig != null && trig instanceof GitLabPushTrigger)
+        if ( trig != null && trig instanceof GitLabPushTrigger )
             return (GitLabPushTrigger) trig;
         return null;
     }

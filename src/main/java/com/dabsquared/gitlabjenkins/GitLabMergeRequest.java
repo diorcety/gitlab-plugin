@@ -1,11 +1,11 @@
 package com.dabsquared.gitlabjenkins;
 
-import java.io.IOException;
-import java.util.Date;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.gitlab.api.models.GitlabProject;
+
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * Represents for WebHook payload
@@ -14,15 +14,15 @@ import org.gitlab.api.models.GitlabProject;
  */
 public class GitLabMergeRequest extends GitLabRequest {
 
-	public static GitLabMergeRequest create(String payload) {
-        if (payload == null) {
+    public static GitLabMergeRequest create(String payload) {
+        if ( payload == null ) {
             throw new IllegalArgumentException("payload should not be null");
         }
-     
-        GitLabMergeRequest pushRequest =  Builder.INSTANCE.get().fromJson(payload, GitLabMergeRequest.class);
+
+        GitLabMergeRequest pushRequest = Builder.INSTANCE.get().fromJson(payload, GitLabMergeRequest.class);
         return pushRequest;
     }
-    
+
     public GitLabMergeRequest() {
     }
 
@@ -30,12 +30,12 @@ public class GitLabMergeRequest extends GitLabRequest {
 
     private ObjectAttributes objectAttributes;
     private GitlabProject sourceProject = null;
-    
-    public GitlabProject getSourceProject (GitLab api) throws IOException {
-    	if (sourceProject == null) {
-    		sourceProject = api.instance().getProject(objectAttributes.sourceProjectId);
-    	}
-    	return sourceProject;
+
+    public GitlabProject getSourceProject(GitLab api) throws IOException {
+        if ( sourceProject == null ) {
+            sourceProject = api.instance().getProject(objectAttributes.sourceProjectId);
+        }
+        return sourceProject;
     }
 
     public String getObject_kind() {
@@ -242,7 +242,7 @@ public class GitLabMergeRequest extends GitLabRequest {
         }
     }
 
-    public static class Branch{
+    public static class Branch {
         private String name;
         private String ssh_url;
         private String http_url;
@@ -280,7 +280,8 @@ public class GitLabMergeRequest extends GitLabRequest {
             this.namespace = namespace;
         }
     }
-    public static class LastCommit{
+
+    public static class LastCommit {
         private String id;
         private String message;
         private String url;

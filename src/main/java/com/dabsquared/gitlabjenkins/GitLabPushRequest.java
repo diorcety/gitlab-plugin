@@ -1,9 +1,9 @@
 package com.dabsquared.gitlabjenkins;
 
-import java.util.List;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+
+import java.util.List;
 
 /**
  * Represents for WebHook payload
@@ -12,11 +12,11 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public class GitLabPushRequest extends GitLabRequest {
     public static GitLabPushRequest create(String payload) {
-        if (payload == null) {
+        if ( payload == null ) {
             throw new IllegalArgumentException("payload should not be null");
         }
-     
-        GitLabPushRequest pushRequest =  Builder.INSTANCE.get().fromJson(payload, GitLabPushRequest.class);
+
+        GitLabPushRequest pushRequest = Builder.INSTANCE.get().fromJson(payload, GitLabPushRequest.class);
         return pushRequest;
     }
 
@@ -34,17 +34,18 @@ public class GitLabPushRequest extends GitLabRequest {
     private Integer total_commits_count;
     private Repository repository;
     private List<Commit> commits;
-    
+
     public List<Commit> getCommits() {
         return commits;
     }
+
     public Commit getLastCommit() {
-        if (commits.isEmpty()) {
+        if ( commits.isEmpty() ) {
             return null;
         }
         return commits.get(commits.size() - 1);
     }
-    
+
     public void setCommits(List<Commit> commits) {
         this.commits = commits;
     }

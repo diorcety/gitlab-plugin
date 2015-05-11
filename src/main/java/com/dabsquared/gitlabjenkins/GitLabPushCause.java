@@ -28,7 +28,7 @@ public class GitLabPushCause extends SCMTrigger.SCMTriggerCause {
 
     @Override
     public String getShortDescription() {
-        if (pushedBy == null) {
+        if ( pushedBy == null ) {
             return "Started by GitLab push";
         } else {
             return String.format("Started by GitLab push by %s", pushedBy);
