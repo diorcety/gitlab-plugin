@@ -522,13 +522,22 @@ public class GitLabWebHook implements UnprotectedRootAction {
      */
     @SuppressWarnings("rawtypes")
     private AbstractBuild getBuildByBranch(AbstractProject project, String branch) {
+        String sourceRepoName = GitLabPushTrigger.getDesc().getSourceRepoNameDefault(project);
+        String sourceRepoURL = GitLabPushTrigger.getDesc().getSourceRepoURLDefault(project).toString();
         List<AbstractBuild> builds = project.getBuilds();
         for ( AbstractBuild build : builds ) {
             BuildData data = build.getAction(BuildData.class);
             if ( data != null && data.lastBuild != null ) {
                 MergeRecord merge = build.getAction(MergeRecord.class);
                 boolean isMergeBuild = merge != null && !merge.getSha1().equals(data.lastBuild.getMarked().getSha1String());
-                if ( data.lastBuild.getRevision() != null && !isMergeBuild ) {
+                ParametersAction action = build.getAction(ParametersAction.class);
+                ParameterValue gitlabSourceRepoURL = action.getParameter("gitlabSourceRepoURL");
+                ParameterValue gitlabSourceRepoName = action.getParameter("gitlabSourceRepoName");
+                boolean isDefault = true;
+                if(gitlabSourceRepoName != null && gitlabSourceRepoURL != null) {
+                    isDefault = sourceRepoName.equals(gitlabSourceRepoName.getValue().toString()) && sourceRepoURL.equals(gitlabSourceRepoURL.getValue().toString());
+                }
+                if ( data.lastBuild.getRevision() != null && !isMergeBuild && isDefault ) {
                     for ( Branch b : data.lastBuild.getRevision().getBranches() ) {
                         if ( b.getName().endsWith("/" + branch) )
                             return build;
