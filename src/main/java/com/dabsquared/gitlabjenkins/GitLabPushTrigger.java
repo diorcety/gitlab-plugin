@@ -36,6 +36,12 @@ import java.util.logging.Logger;
  */
 public class GitLabPushTrigger extends Trigger<AbstractProject<?, ?>> {
     private static final Logger LOGGER = Logger.getLogger(GitLabPushTrigger.class.getName());
+    public static final String GITLAB_SOURCE_REPO_URL = "gitlabSourceRepoURL";
+    public static final String GITLAB_SOURCE_REPO_NAME = "gitlabSourceRepoName";
+    public static final String GITLAB_SOURCE_BRANCH = "gitlabSourceBranch";
+    public static final String GITLAB_TARGET_BRANCH = "gitlabTargetBranch";
+    public static final String GITLAB_BRANCH = "gitlabBranch";
+
     private boolean triggerOnPush = true;
     private boolean triggerOnMergeRequest = true;
     private boolean triggerOpenMergeRequestOnPush = true;
@@ -146,13 +152,13 @@ public class GitLabPushTrigger extends Trigger<AbstractProject<?, ?>> {
                     LOGGER.log(Level.INFO, "GitLab Push Request from branch {0}.", branch);
 
                     Map<String, ParameterValue> values = getDefaultParameters();
-                    values.put("gitlabSourceBranch", new StringParameterValue("gitlabSourceBranch", branch));
-                    values.put("gitlabTargetBranch", new StringParameterValue("gitlabTargetBranch", branch));
-                    values.put("gitlabBranch", new StringParameterValue("gitlabBranch", branch));
+                    values.put(GITLAB_SOURCE_BRANCH, new StringParameterValue(GITLAB_SOURCE_BRANCH, branch));
+                    values.put(GITLAB_TARGET_BRANCH, new StringParameterValue(GITLAB_TARGET_BRANCH, branch));
+                    values.put(GITLAB_BRANCH, new StringParameterValue(GITLAB_BRANCH, branch));
 
                     LOGGER.log(Level.INFO, "Trying to get name and URL for job: {0} using project {1} (push)", new String[]{job.getName(), job.getRootProject().getName()});
-                    values.put("gitlabSourceRepoName", new StringParameterValue("gitlabSourceRepoName", getDesc().getSourceRepoNameDefault(job)));
-                    values.put("gitlabSourceRepoURL", new StringParameterValue("gitlabSourceRepoURL", getDesc().getSourceRepoURLDefault(job).toString()));
+                    values.put(GITLAB_SOURCE_REPO_NAME, new StringParameterValue(GITLAB_SOURCE_REPO_NAME, getDesc().getSourceRepoNameDefault(job)));
+                    values.put(GITLAB_SOURCE_REPO_URL, new StringParameterValue(GITLAB_SOURCE_REPO_URL, getDesc().getSourceRepoURLDefault(job).toString()));
 
                     List<ParameterValue> listValues = new ArrayList<ParameterValue>(values.values());
 
@@ -209,8 +215,8 @@ public class GitLabPushTrigger extends Trigger<AbstractProject<?, ?>> {
                     List<Action> actions = new ArrayList<Action>();
 
                     Map<String, ParameterValue> values = getDefaultParameters();
-                    values.put("gitlabSourceBranch", new StringParameterValue("gitlabSourceBranch", getSourceBranch(req)));
-                    values.put("gitlabTargetBranch", new StringParameterValue("gitlabTargetBranch", req.getObjectAttribute().getTargetBranch()));
+                    values.put(GITLAB_SOURCE_BRANCH, new StringParameterValue(GITLAB_SOURCE_BRANCH, getSourceBranch(req)));
+                    values.put(GITLAB_TARGET_BRANCH, new StringParameterValue(GITLAB_TARGET_BRANCH, req.getObjectAttribute().getTargetBranch()));
 
                     LOGGER.log(Level.INFO, "Trying to get name and URL for job: {0} using project {1}", new String[]{job.getName(), getDesc().project.getName()});
                     String sourceRepoName = getDesc().getSourceRepoNameDefault(job);
@@ -226,8 +232,8 @@ public class GitLabPushTrigger extends Trigger<AbstractProject<?, ?>> {
                         }
                     }
 
-                    values.put("gitlabSourceRepoName", new StringParameterValue("gitlabSourceRepoName", sourceRepoName));
-                    values.put("gitlabSourceRepoURL", new StringParameterValue("gitlabSourceRepoURL", sourceRepoURL));
+                    values.put(GITLAB_SOURCE_REPO_NAME, new StringParameterValue(GITLAB_SOURCE_REPO_NAME, sourceRepoName));
+                    values.put(GITLAB_SOURCE_REPO_URL, new StringParameterValue(GITLAB_SOURCE_REPO_URL, sourceRepoURL));
 
                     List<ParameterValue> listValues = new ArrayList<ParameterValue>(values.values());
 

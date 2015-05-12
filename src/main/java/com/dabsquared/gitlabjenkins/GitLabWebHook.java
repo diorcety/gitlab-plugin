@@ -531,8 +531,8 @@ public class GitLabWebHook implements UnprotectedRootAction {
                 MergeRecord merge = build.getAction(MergeRecord.class);
                 boolean isMergeBuild = merge != null && !merge.getSha1().equals(data.lastBuild.getMarked().getSha1String());
                 ParametersAction action = build.getAction(ParametersAction.class);
-                ParameterValue gitlabSourceRepoURL = action.getParameter("gitlabSourceRepoURL");
-                ParameterValue gitlabSourceRepoName = action.getParameter("gitlabSourceRepoName");
+                ParameterValue gitlabSourceRepoURL = action.getParameter(GitLabPushTrigger.GITLAB_SOURCE_REPO_URL);
+                ParameterValue gitlabSourceRepoName = action.getParameter(GitLabPushTrigger.GITLAB_SOURCE_REPO_NAME);
                 boolean isDefault = true;
                 if(gitlabSourceRepoName != null && gitlabSourceRepoURL != null) {
                     isDefault = sourceRepoName.equals(gitlabSourceRepoName.getValue().toString()) && sourceRepoURL.equals(gitlabSourceRepoURL.getValue().toString());
